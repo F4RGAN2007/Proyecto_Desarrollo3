@@ -35,15 +35,27 @@ Los requisitos funcionales se presentan en forma de **historias de usuario**, es
 
 ---
 
+
 ## 3. Requisitos de Calidad  
 Los requisitos de calidad se presentan en forma de **historias de calidad**, siguiendo la estructura de Len Bass.
 
 ### **Historias de Calidad**
 | **ID**    | **Fuente**         | **Estímulo**         | **Artefactos**         | **Entorno**         | **Respuesta**         | **Medida de Respuesta**         |
 | --------- | ------------------ | -------------------- | ---------------------- | ------------------- | --------------------- | ------------------------------- |
-| **RQ-01** | _[Agregar fuente]_ | _[Agregar estímulo]_ | _[Agregar artefactos]_ | _[Agregar entorno]_ | _[Agregar respuesta]_ | _[Agregar medida de respuesta]_ |
-| **RQ-02** | _[Agregar fuente]_ | _[Agregar estímulo]_ | _[Agregar artefactos]_ | _[Agregar entorno]_ | _[Agregar respuesta]_ | _[Agregar medida de respuesta]_ |
-| **RQ-03** | _[Agregar fuente]_ | _[Agregar estímulo]_ | _[Agregar artefactos]_ | _[Agregar entorno]_ | _[Agregar respuesta]_ | _[Agregar medida de respuesta]_ |
+| **RQ-01 (Disponibilidad)** | Falla de infraestructura | Una instancia de un microservicio crítico se cae | Microservicios (Pedidos, Inventario, Entregas) | Operación normal o en hora pico | El gateway redirige automáticamente las solicitudes a instancias sanas y genera alerta | Redirección en ≤ 5 segundos. Disponibilidad ≥ 99.5% mensual. Alerta generada en ≤ 1 minuto|
+| **RQ-02 (Rendimiento)** | Usuario (cliente/admin) | Realiza una solicitud (consulta catálogo o pedido) | API Gateway + Microservicios | Hora pico | El sistema procesa y responde la solicitud sin degradación perceptible | Tiempo de respuesta ≤ 300 ms en el 95% de las solicitudes |
+| **RQ-03 (Escalabilidad)** | Incremento sostenido de usuarios | Aumento del 50% en la carga durante 10 minutos | Clúster en Kubernetes | Hora pico | El sistema levanta nuevas instancias automáticamente sin interrumpir usuarios | Nuevas instancias activas en ≤ 2 minutos. 0% de caída de servicio durante escalado|
+| **RQ-04 (Seguridad - Autenticación)** | Usuario malintencionado | Múltiples intentos fallidos de autenticación | Servicio de autenticación (OAuth2 + JWT) | Operación normal | El sistema bloquea temporalmente la cuenta y registra evento sospechoso | Bloqueo tras 5 intentos fallidos en 5 minutos. Evento registrado en logs inmediatamente |
+| **RQ-05 (Seguridad - Autorización)** | Usuario autenticado | Intenta acceder a recurso sin permisos | API Gateway / Control de roles | Operación normal | El sistema deniega acceso y registra intento | Respuesta HTTP 403 en ≤ 200 ms. Registro del evento en logs centralizados |
+| **RQ-06 (Confiabilidad de Mensajería)** | Falla en procesamiento de mensaje | Un mensaje de actualización de stock no puede procesarse | Sistema de mensajería (Kafka/RabbitMQ) | Operación normal | El mensaje se reintenta automáticamente o pasa a cola de pendientes (DLQ) | 0% de pérdida de mensajes. Máximo 3 reintentos antes de enviarlo a DLQ |
+| **RQ-07 (Consistencia de Inventario)** | Creación de pedido | Se descuenta stock de un producto | Servicio de Inventario | Alta concurrencia | El sistema evita stock negativo y mantiene consistencia | Stock nunca < 0. Actualización reflejada en ≤ 5 segundos |
+| **RQ-08 (Observabilidad)** | Error repetitivo o tiempo alto de respuesta | Servicio supera umbral de latencia | Sistema completo (logs, métricas, monitoreo) | Hora pico | Se genera alerta automática y queda trazabilidad | Alerta en ≤ 1 minuto si latencia > 300 ms por 3 minutos consecutivos |
+| **RQ-09 (Actualización casi en tiempo real)** | Repartidor actualiza estado | Cambio de estado a “En ruta” o actualización de ubicación | Servicio de Entregas | Pedido en proceso de entrega | El sistema refleja el cambio al cliente y operador | Actualización visible en ≤ 30 segundos |
+| **RQ-10 (Recuperación ante fallos)** | Reinicio inesperado de servicio | Servicio vuelve a estar disponible | Microservicio afectado | Entorno degradado | El servicio se reintegra al clúster automáticamente | Reintegración en ≤ 2 minutos sin intervención manual |
+
+
+
+
 
 >  **Instrucciones:**  
 > - Completar al menos **6 historias de calidad**, alineadas con atributos clave como **rendimiento, escalabilidad y seguridad**.  
