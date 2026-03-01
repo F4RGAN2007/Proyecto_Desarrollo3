@@ -66,10 +66,29 @@ Los requisitos de calidad se presentan en forma de **historias de calidad**, sig
 ## 4. Restricciones del Sistema  
 Las restricciones establecen **limitaciones** en la arquitectura del sistema, ya sean tecnológicas, de negocio, regulatorias o de infraestructura.
 
-### **Lista de Restricciones**
-| **Tipo de Restricción** | **Descripción**                                                                                                                                                          |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| _[Agregar otro tipo]_   | _[Describir la restricción]_                                                                                                                                             |
+### Lista de Restricciones Identificadas
+
+| Tipo de Restricción | Descripción | Evidencia (frase textual) |
+|---------------------|------------|----------------------------|
+| Tecnológica | La arquitectura debe implementarse bajo un enfoque de microservicios | "debemos dividir la solución en servicios (microservicios)" |
+| Tecnológica | La solución debe incorporar un API Gateway como punto único de entrada | "debe existir un punto único de entrada a la plataforma (un gateway)" |
+| Tecnológica | El sistema debe utilizar un stack específico definido por la dirección | "La dirección de tecnología también pidió un stack concreto" |
+| Tecnológica | El sistema debe implementar trazabilidad mediante métricas, logs y alertas | "el sistema debe dejar trazabilidad. Necesitamos métricas, logs y alertas." |
+| Tecnológica | No se permite la pérdida ni duplicación de mensajes en los flujos de los mensajes | "no podemos permitir pérdida de mensajes ni duplicaciones que dañen el negocio" |
+| Tecnológica | El desarrollo debe realizarse con integración continua y despliegue automatico | "con integración continua y despliegue automatizado" |
+| Infraestructura | La plataforma debe redirigir solicitudes a instancias sanas en caso de fallar | "redirigiendo a instancias sanas" |
+| Infraestructura | Los servicios críticos no deben presentar caídas | "no quiero caídas en servicios críticos" |
+| Infraestructura | Los servicios deben mantener tiempos de respuesta menores a 300 ms | "si un servicio tarda más de 300 ms en responder" |
+| Infraestructura | Debe ser posible escalar levantando nuevas instancias sin interrumpir a los usuarios | "debe ser posible levantar más instancias sin interrumpir a los usuarios" |
+| Infraestructura | El sistema debe actualizar el estado de pedidos en intervalos frecuentes (10 a 30 segundos) | "actualización frecuente (por ejemplo, cada 10 a 30 segundos)" |
+| De negocio | Los pedidos deben asignarse de manera ordenada a los repartidores | "los pedidos se asignen de manera ordenada a repartidores" |
+| De negocio | Las demoras o novedades en pedidos deben quedar registradas y ser visibles | "Si un pedido se demora o se presenta una novedad, debe quedar registrado y visible." |
+| De negocio | El equipo debe trabajar bajo un proceso tipo SCRUM | "un proceso de trabajo tipo SCRUM con sprints cortos, dailies y revisiones" |
+| Regulatoria | Los accesos al sistema deben gestionarse por roles | "Los accesos deben ser por roles" |
+| Regulatoria | El sistema debe detectar y reaccionar ante intentos sospechosos de ingreso | "se debe detectar y reaccionar ante intentos sospechosos" |
+
+
+                                                                                                                                 
 
 >  **Tipos de restricciones:**  
 > - **Tecnológicas:** Lenguajes, frameworks o herramientas que deben utilizarse.  
