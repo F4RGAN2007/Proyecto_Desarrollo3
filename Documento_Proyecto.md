@@ -5,13 +5,12 @@
 ## 1. Introducción  
 Este documento describe la arquitectura inicial del sistema de gestión de órdenes y entregas, incluyendo requisitos funcionales, requisitos de calidad y restricciones que deben ser consideradas en el diseño del software.
 
-**Equipo:** Los informantes
-**Integrantes:** 
+**Equipo:**
 
-- Moises Uriel Medina Villa 2459709
-- Santiago Avalo Monsalve 2359442
-- Daniel Gómez Cano 2359396
-- Edward Stivens Pinto 2359431
+- Moises Uriel Medina Villa - 2459709
+- Santiago Avalo Monsalve - 2359442
+- Daniel Gómez Cano - 2359396
+- Edward Stivens Pinto - 2359431
 
 **Fecha:** 01/03/2026
 
@@ -45,9 +44,14 @@ Los requisitos de calidad se presentan en forma de **historias de calidad**, sig
 ### **Historias de Calidad**
 | **ID**    | **Fuente**         | **Estímulo**         | **Artefactos**         | **Entorno**         | **Respuesta**         | **Medida de Respuesta**         |
 | --------- | ------------------ | -------------------- | ---------------------- | ------------------- | --------------------- | ------------------------------- |
-| **RQ-01** | _[Agregar fuente]_ | _[Agregar estímulo]_ | _[Agregar artefactos]_ | _[Agregar entorno]_ | _[Agregar respuesta]_ | _[Agregar medida de respuesta]_ |
-| **RQ-02** | _[Agregar fuente]_ | _[Agregar estímulo]_ | _[Agregar artefactos]_ | _[Agregar entorno]_ | _[Agregar respuesta]_ | _[Agregar medida de respuesta]_ |
-| **RQ-03** | _[Agregar fuente]_ | _[Agregar estímulo]_ | _[Agregar artefactos]_ | _[Agregar entorno]_ | _[Agregar respuesta]_ | _[Agregar medida de respuesta]_ |
+| **RQ-01 (Performance)** | Usuario | Realiza una búsqueda de eventos disponibles |API Gateway + servicio de catálogo/eventos |Operación normal |El sistema procesa la consulta y devuelve los eventos disponibles |Tiempo de respuesta ≤ 300 ms en las solicitudes. |
+| **RQ-02 (Escalabilidad)** | Sistema |Incremento repentino de solicitudes de compra de boletas | Servicios de órdenes y pagos| Hora pico o alta demanda | El sistema escala automáticamente instancias de los microservicios afectados | Capacidad de soportar hasta 5× la carga normal sin degradar el tiempo de respuesta el cual es >= 300 ms |
+| **RQ-03 (Disponibilidad)** |Usuario | Intenta acceder a la plataforma para consultar o comprar boletas | API Gateway y microservicios principales | Operación continua | El sistema mantiene disponibilidad del servicio incluso ante fallas parciales |Disponibilidad ≥ 99% mensual |
+| **RQ-04 (Seguridad)** | Usuario malicioso o atacante | Realiza múltiples intentos fallidos de autenticación |Servicio de autenticación y gateway | Operación normal | El sistema detecta intentos sospechosos y bloquea temporalmente la cuenta o IP | Bloqueo automático tras 5 intentos fallidos en menos de 1 minuto |
+| **RQ-05 (Integrabilidad)** | Sistema externo (pasarela de pagos) | Se procesa un pago de una boleta | Servicio de pagos | Operación normal | El sistema se comunica con la pasarela y actualiza el estado de la orden | Confirmación o rechazo del pago en ≤ 2 segundos |
+| **RQ-06 (Confiabilidad / Mensajería)** | Sistema | Se envía un evento de confirmación de pago | Sistema de mensajería (Kafka/RabbitMQ) y servicio de tickets | Operación normal | El mensaje se procesa sin pérdida y se genera la boleta digital | 0 pérdida de mensajes y reintentos automáticos hasta 3 veces |
+| **RQ-07 (Usabilidad)** | Usuario | Compra una boleta y recibe su entrada digital | Servicio de generación de tickets | Operación normal | El sistema genera la boleta con QR y la envía al usuario | Entrega de la boleta digital en ≤ 5 segundos después del pago confirmado |
+
 
 >  **Instrucciones:**  
 > - Completar al menos **6 historias de calidad**, alineadas con atributos clave como **rendimiento, escalabilidad y seguridad**.  
@@ -66,6 +70,7 @@ Las restricciones establecen **limitaciones** en la arquitectura del sistema, ya
 | De infraestructura | La arquitectura debe implementarse bajo un enfoque de microservicios. |
 | De negocio   | Las boletas deben tener su QR respectivo.|
 | Tecnológia   | El sistema debe poder desplegarse mediante contenedores (dockers) para facilitar su ejecución en entornos de prueba. |
+| Tecnológia   | Se debe utilizar Java con su framework SpringBoot. |
 
 >  **Tipos de restricciones:**  
 > - **Tecnológicas:** Lenguajes, frameworks o herramientas que deben utilizarse.  
